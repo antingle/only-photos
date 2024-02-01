@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Only Photos</title>
+</head>
+<body>
+
+<main>
+    <h1>Only Photos</h1>
+    <h2>Posts</h2>
+    #for(post in posts):
+        <article>
+            <img style="width:100%;" src=#(post.fileName)>
+            <p>#(post.description)</p>
+        </article>
+    #endfor
+</main>
+    
+</body>
+</html>

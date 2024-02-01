@@ -1,5 +1,6 @@
 import Fluent
 import FluentSQLiteDriver
+import Leaf
 import NIOSSL
 import Vapor
 
@@ -13,6 +14,8 @@ public func configure(_ app: Application) async throws {
 
     // increase body size for image uploads
     app.routes.defaultMaxBodySize = "5mb"
+
+    app.views.use(.leaf)
 
     // register routes
     try routes(app)
