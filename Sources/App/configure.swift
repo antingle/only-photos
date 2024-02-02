@@ -13,7 +13,7 @@ public func configure(_ app: Application) async throws {
     app.migrations.add(CreatePost())
 
     // increase body size for image uploads
-    app.routes.defaultMaxBodySize = "5mb"
+    app.routes.defaultMaxBodySize = "10mb"
 
     app.views.use(.leaf)
 

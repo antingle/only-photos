@@ -3,19 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/styles/app.generated.css" />
     <title>Only Photos</title>
 </head>
-<body>
+<body class="bg-systemGray-900 text-gray-50">
 
-<main>
-    <h1>Only Photos</h1>
-    <h2>Posts</h2>
+<main class="max-w-2xl mx-auto my-8">
+    <h1 class="text-5xl font-bold mb-8">Only Photos</h1>
+
+   
+    <form class="bg-systemGray-800 rounded-lg p-2 mb-4" action="/posts" method="post" enctype="multipart/form-data">
+        <div class="flex flex-col gap-2">
+            <h2 class="text-3xl font-semibold ml-2">Post</h2>
+            <input type="file" name="image" accept="image/*" capture="camera"class="rounded-lg p-2 bg-systemGray-700">
+            <textarea name="description" class="rounded-lg p-2 bg-systemGray-700 min-h-12" placeholder="Description" rows="3"></textarea>
+            <button type="submit" class="rounded-lg p-2 bg-blue-600 hover:bg-blue-600/90 hover:shadow-lg active:shadow-none active:bg-blue-600/80 transition-colors font-semibold">Post</button>
+        </div>
+    </form>
+    <h2 class="text-3xl font-semibold mb-4">Posts</h2>
+    <div class="flex flex-col gap-4">
     #for(post in posts):
-        <article>
-            <img style="width:100%;" src=#(post.fileName)>
+        <article class="bg-systemGray-800 rounded-lg shadow-lg p-2 flex flex-col gap-2">
+        <div class="rounded-lg overflow-hidden w-full">
+            <img style="w-full" src="#(post.fileName)"">
+        </div>
+        <div class="rounded-lg p-4 bg-systemGray-700">
             <p>#(post.description)</p>
+        </div>
         </article>
     #endfor
+    </div>
 </main>
     
 </body>
