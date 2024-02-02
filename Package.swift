@@ -15,6 +15,7 @@ let package = Package(
         .package(url: "https://github.com/vapor/fluent-sqlite-driver.git", from: "4.0.0"),
         .package(url: "https://github.com/vapor/leaf.git", from: "4.0.0"),
         .package(url: "https://github.com/apple/swift-format.git", branch: ("release/5.9")),
+        .package(url: "https://github.com/tuist/SwiftyTailwind.git", .upToNextMinor(from: "0.5.0")),
     ],
     targets: [
         .executableTarget(
@@ -24,6 +25,7 @@ let package = Package(
                 .product(name: "FluentSQLiteDriver", package: "fluent-sqlite-driver"),
                 .product(name: "Vapor", package: "vapor"),
                 .product(name: "Leaf", package: "leaf"),
+                .product(name: "SwiftyTailwind", package: "SwiftyTailwind"),
             ]
         ),
         .testTarget(
