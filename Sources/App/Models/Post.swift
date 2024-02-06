@@ -10,15 +10,15 @@ final class Post: Model {
     @Field(key: "description")
     var description: String
     
-    @Field(key: "file_name")
-    var fileName: String
+    @Field(key: "image_path")
+    var imagePath: String // imagePath is relative to public directory
 
     init() { }
 
-    init(id: UUID? = nil, description: String, fileName: String) {
+    init(id: UUID? = nil, description: String, imagePath: String) {
         self.id = id
         self.description = description
-        self.fileName = fileName
+        self.imagePath = imagePath
     }
 }
 

@@ -51,7 +51,7 @@
         #for(post in posts):
             <article class="bg-systemGray-800 rounded-lg shadow-lg p-2 flex flex-col gap-2">
             <div class="rounded-lg overflow-hidden w-full">
-                <img style="w-full" src="#(post.fileName)"">
+                <img class="max-h-[80vh] mx-auto" src="#(post.imagePath)">
             </div>
             <div class="rounded-lg p-4 bg-systemGray-700">
                 <p>#(post.description)</p>

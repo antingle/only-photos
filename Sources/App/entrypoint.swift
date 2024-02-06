@@ -16,6 +16,12 @@ enum Entrypoint {
             app.logger.report(error: error)
             throw error
         }
+        
+        if (env.arguments.contains { arg in arg == "migrate" }) {
+            // do not run tailwind when doing migrations
+            try await app.execute()
+            return
+        }
 
         switch app.environment {
         case .development:

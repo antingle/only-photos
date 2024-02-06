@@ -12,14 +12,14 @@ struct PostController: RouteCollection {
     }
 
     func index(req: Request) async throws -> [PostResponse] {
-        let posts = try await Post.query(on: req.db).all()
+        let posts = try await Post.query(on: req.db).all().reversed()
         var postResponses: [PostResponse] = []
         for post in posts {
             req.logger.info("\(post.id?.uuidString ?? "NO ID")")
             guard
                 let imageLink = URL(
                     string:
-                        "http://\(req.application.http.server.configuration.hostname):\(req.application.http.server.configuration.port)/\(post.fileName)"
+                        "http://\(req.application.http.server.configuration.hostname):\(req.application.http.server.configuration.port)/\(post.imagePath)"
                 )
             else {
                 throw Abort(.internalServerError)
@@ -33,10 +33,13 @@ struct PostController: RouteCollection {
     func create(req: Request) async throws -> Response {
         let postContent = try req.content.decode(PostContent.self)
         let fileName = postContent.image.filename
-        try await req.fileio.writeFile(
-            postContent.image.data, at: req.application.directory.publicDirectory + fileName)
+        guard let imageURLPath = URL(string: "images/" + fileName) else { throw Abort(.badRequest) } // convert to URL to manipulate file name
+        guard let imagePath = imageURLPath.addingTimestamp().absoluteString.removingPercentEncoding else { throw Abort(.internalServerError) }
+        
+        try await req.fileio.writeFile(postContent.image.data,
+                                       at: req.application.directory.publicDirectory.finished(with: "/" + imagePath))
 
-        let post = Post(description: postContent.description, fileName: fileName)
+        let post = Post(description: postContent.description, imagePath: imagePath)
         try await post.save(on: req.db)
         return req.redirect(to: "/")
     }
@@ -46,7 +49,7 @@ struct PostController: RouteCollection {
             throw Abort(.notFound)
         }
         try FileManager().removeItem(
-            atPath: req.application.directory.publicDirectory + post.fileName)
+            atPath: req.application.directory.publicDirectory.finished(with: "/" + post.imagePath))
         try await post.delete(on: req.db)
         return .noContent
     }
