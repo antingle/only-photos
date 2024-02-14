@@ -16,23 +16,16 @@ enum Entrypoint {
             app.logger.report(error: error)
             throw error
         }
-        
-        if (env.arguments.contains { arg in arg == "migrate" }) {
-            // do not run tailwind when doing migrations
-            try await app.execute()
-            return
-        }
 
-        switch app.environment {
-        case .development:
-            // Run the app and tailwind watching in parallel
-            async let runApp: () = try await app.execute()
-            _ = await [try runTailwindWatch(app), try await runApp]
-        default:
-            // Minify the CSS and run the app
-            try await runTailwindMinify(app)
+        #if DEBUG
+            if (env.arguments.contains { arg in arg == "migrate" }) {
+                try await app.execute()
+            } else {
+                async let runApp: () = try await app.execute()
+                _ = try await [runTailwind(app), await runApp]
+            }
+        #else
             try await app.execute()
-        }
-
+        #endif
     }
 }

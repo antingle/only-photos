@@ -19,7 +19,7 @@ struct PostController: RouteCollection {
             guard
                 let imageLink = URL(
                     string:
-                        "http://\(req.application.http.server.configuration.hostname):\(req.application.http.server.configuration.port)/\(post.imagePath)"
+                    "http://\(req.application.http.server.configuration.hostname):\(req.application.http.server.configuration.port)/\(post.imagePath)"
                 )
             else {
                 throw Abort(.internalServerError)
@@ -35,7 +35,7 @@ struct PostController: RouteCollection {
         let fileName = postContent.image.filename
         guard let imageURLPath = URL(string: "images/" + fileName) else { throw Abort(.badRequest) } // convert to URL to manipulate file name
         guard let imagePath = imageURLPath.addingTimestamp().absoluteString.removingPercentEncoding else { throw Abort(.internalServerError) }
-        
+
         try await req.fileio.writeFile(postContent.image.data,
                                        at: req.application.directory.publicDirectory.finished(with: "/" + imagePath))
 

@@ -12,7 +12,7 @@ struct CreatePost: AsyncMigration {
 
     func revert(on database: Database) async throws {
         try await database.schema("posts").delete()
-        
+
         // remove images stored in Public/images/
         let fileManager = FileManager.default
         let imagesPath = fileManager.currentDirectoryPath.finished(with: "/Public/images/")
